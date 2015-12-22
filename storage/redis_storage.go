@@ -12,11 +12,12 @@ import (
 	"bytes"
 	"encoding/gob"
 	"errors"
-	"github.com/garyburd/redigo/redis"
-	"github.com/jrsix/gof"
 	"reflect"
 	"strings"
 	"sync"
+
+	"github.com/garyburd/redigo/redis"
+	"github.com/mark/gof"
 )
 
 var DriveRedisStorage string = "redis-storage"

@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 @press soft.
+ * Copyright 2015 @ presssfot.com
  * name : controller.go
  * author : mark zhang
  * date : -- :

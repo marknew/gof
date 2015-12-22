@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/jrsix/gof"
 	"net"
 	"reflect"
+
+	"github.com/mark/gof"
 )
 
 var (

@@ -3,10 +3,11 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"github.com/jrsix/gof/db/orm"
 	"log"
 	"os"
 	"testing"
+
+	"github.com/mark/gof/db/orm"
 )
 
 var (

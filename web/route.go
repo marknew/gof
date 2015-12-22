@@ -1,5 +1,5 @@
 /**
- * Copyright 2014 @press soft.
+ * Copyright 2014 @ presssfot.com
  * name :
  * author : mark zhang
  * date : 2014-02-05 21:53

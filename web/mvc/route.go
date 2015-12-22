@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 @press soft.
+ * Copyright 2015 @ presssfot.com
  * name : route.go
  * author : mark zhang
  * date : -- :
@@ -9,10 +9,11 @@
 package mvc
 
 import (
-	"github.com/jrsix/gof/web"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/mark/gof/web"
 )
 
 var _ web.Route = new(Route)

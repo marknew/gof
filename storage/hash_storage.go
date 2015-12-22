@@ -10,8 +10,9 @@ package storage
 
 import (
 	"errors"
-	"github.com/jrsix/gof"
 	"sync"
+
+	"github.com/mark/gof"
 )
 
 var DriveHashStorage string = "hash-storage"

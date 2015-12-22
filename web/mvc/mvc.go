@@ -1,5 +1,5 @@
 /**
- * Copyright 2014 @press soft.
+ * Copyright 2014 @ presssfot.com
  * name :
  * author : mark zhang
  * date : 2014-02-05 21:53
@@ -10,10 +10,11 @@ package mvc
 
 import (
 	"fmt"
-	"github.com/jrsix/gof/web"
 	"net/http"
 	"reflect"
 	"strings"
+
+	"github.com/mark/gof/web"
 )
 
 func CustomHandle(c Controller, ctx *web.Context, action string, args ...interface{}) {

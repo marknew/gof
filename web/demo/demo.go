@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 @press soft.
+ * Copyright 2015 @ presssfot.com
  * name :
  * author : mark zhang
  * date : 2015-04-27 00:53
@@ -10,14 +10,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/jrsix/gof"
-	"github.com/jrsix/gof/db"
-	"github.com/jrsix/gof/log"
-	"github.com/jrsix/gof/storage"
-	"github.com/jrsix/gof/web"
-	"github.com/jrsix/gof/web/mvc"
 	"net/http"
 	"strings"
+
+	"github.com/mark/gof"
+	"github.com/mark/gof/db"
+	"github.com/mark/gof/log"
+	"github.com/mark/gof/storage"
+	"github.com/mark/gof/web"
+	"github.com/mark/gof/web/mvc"
 )
 
 // 实现gof.App接口，以支持配置(config)、DB、ORM、日志(logger)、

@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 @press soft.
+ * Copyright 2015 @ presssfot.com
  * name : filter.go
  * author : mark zhang
  * date : -- :
@@ -9,7 +9,7 @@
 package mvc
 
 import (
-	"github.com/jrsix/gof/web"
+	"github.com/mark/gof/web"
 )
 
 // controller filter

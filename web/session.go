@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 @press soft.
+ * Copyright 2015 @ presssfot.com
  * name : session.go
  * author : mark zhang
  * date : -- :
@@ -11,28 +11,22 @@ package web
 import (
 	"encoding/gob"
 	"fmt"
-	"github.com/jrsix/gof"
-	"github.com/jrsix/gof/util"
+	"log"
 	"net/http"
 	"time"
+
+	"github.com/mark/gof"
+	"github.com/mark/gof/util"
 )
 
-const defaultSessionMaxAge int64 = 3600 * 12
-const sessionCookieName string = "gof_SessionId"
+const (
+	defaultSessionMaxAge int64  = 3600 * 12
+	sessionCookieName    string = "gof_SessionId"
+)
 
-func init() {
-	// register session type for gob.
-	gob.Register(make(map[string]interface{}))
-}
-func getSessionId(id string) string {
-	return "gof:web:session:" + id
-}
-
-func newSessionId() string {
-	dt := time.Now()
-	randStr := util.RandString(4)
-	return fmt.Sprintf("%s%d%d", randStr, dt.Second(), dt.Nanosecond())
-}
+var (
+	sessionStorage gof.Storage
+)
 
 type Session struct {
 	_sessionId string
@@ -42,7 +36,7 @@ type Session struct {
 	_maxAge    int64
 }
 
-func LoadSession(w http.ResponseWriter, storage gof.Storage, sessionId string) *Session {
+func getSession(w http.ResponseWriter, storage gof.Storage, sessionId string) *Session {
 	s := &Session{
 		_sessionId: sessionId,
 		_rsp:       w,
@@ -54,7 +48,7 @@ func LoadSession(w http.ResponseWriter, storage gof.Storage, sessionId string) *
 	return s
 }
 
-func NewSession(w http.ResponseWriter, storage gof.Storage) *Session {
+func newSession(w http.ResponseWriter, storage gof.Storage) *Session {
 	id := newSessionId()
 	return &Session{
 		_sessionId: id,
@@ -144,4 +138,42 @@ func (this *Session) flushToClient() {
 		Expires:  expires,
 	}
 	http.SetCookie(this._rsp, ck)
+}
+
+func init() {
+	gob.Register(make(map[string]interface{})) // register session type for gob.
+}
+
+func getSessionId(id string) string {
+	return "gof:web:session:" + id
+}
+
+func newSessionId() string {
+	dt := time.Now()
+	randStr := util.RandString(4)
+	return fmt.Sprintf("%s%d%d", randStr, dt.Second(), dt.Nanosecond())
+}
+
+// Set global session storage
+func SetSessionStorage(s gof.Storage) {
+	sessionStorage = s
+}
+
+func parseSession(rsp http.ResponseWriter, r *http.Request, cookieName string, sto gof.Storage) *Session {
+	var s *Session
+	ck, err := r.Cookie(cookieName)
+	if sto == nil {
+		log.Fatalln("session storage is nil")
+	}
+	if err == nil {
+		s = getSession(rsp, sto, ck.Value)
+	} else {
+		s = newSession(rsp, sto)
+	}
+	return s
+}
+
+// Session adapter for http context
+func SessionAdapter(rsp http.ResponseWriter, r *http.Request) *Session {
+	return parseSession(rsp, r, sessionCookieName, sessionStorage)
 }

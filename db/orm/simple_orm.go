@@ -13,9 +13,10 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/jrsix/gof/log"
 	"reflect"
 	"strings"
+
+	"github.com/mark/gof/log"
 )
 
 var _ Orm = new(simpleOrm)
@@ -373,6 +374,7 @@ func (this *simpleOrm) selectBy(to interface{}, sql string, fullSql bool, args .
 	}
 
 	defer stmt.Close()
+
 	rows, err := stmt.Query(args...)
 
 	if err != nil {
@@ -384,7 +386,9 @@ func (this *simpleOrm) selectBy(to interface{}, sql string, fullSql bool, args .
 	/* 用反射来对输出结果复制 */
 	toArr := toVal
 	results := [](map[string][]byte){} //数据切片
+
 	results = RowsToMap(rows)
+
 	var fieldname string
 	//results = RowsToMap(rows) //读入SQL Result into map
 	//http://127.0.0.1:1003/udo/mobile/api/login.html?Usr_Login=admin&usr_Password=63a9f0ea7bb98050796b649e85481845

@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 @press soft.
+ * Copyright 2015 @ presssfot.com
  * name : template.go
  * author : mark zhang
  * date : -- :
@@ -10,9 +10,12 @@
 package gof
 
 import (
+	"bytes"
 	"html/template"
 	"io"
+	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 // Template
@@ -60,7 +63,36 @@ func (this *Template) ExecuteWithFunc(w io.Writer, funcMap template.FuncMap, dat
 	return this.handleError(w, err)
 }
 
+// func (this *Template) Execute(w io.Writer, dataMap TemplateDataMap, tplPath ...string) error {
+
+// 	t, err := template.ParseFiles(tplPath...)
+// 	if err != nil {
+// 		return this.handleError(w, err)
+// 	}
+
+// 	if this.Init != nil {
+// 		if dataMap == nil {
+// 			dataMap = TemplateDataMap{}
+// 		}
+// 		this.Init(&dataMap)
+// 	}
+// 	//follow is write to file for testing
+// 	// for _, path := range tplPath {
+// 	// 	if strings.HasSuffix(path, "index.html") {
+// 	// 		localFile, _ := os.Create("/Users/mark/tmp.html")
+// 	// 		defer localFile.Close()
+// 	// 		writer := bufio.NewWriter(localFile)
+
+// 	// 		t.Execute(writer, dataMap)
+// 	// 	}
+// 	// }
+
+// 	err = t.Execute(w, dataMap)
+// 	return this.handleError(w, err)
+// }
+
 func (this *Template) Execute(w io.Writer, dataMap TemplateDataMap, tplPath ...string) error {
+
 	t, err := template.ParseFiles(tplPath...)
 	if err != nil {
 		return this.handleError(w, err)
@@ -72,10 +104,45 @@ func (this *Template) Execute(w io.Writer, dataMap TemplateDataMap, tplPath ...s
 		}
 		this.Init(&dataMap)
 	}
+	//follow is write to file for testing
+	// for _, path := range tplPath {
+	// 	if strings.HasSuffix(path, "index.html") {
+	// 		localFile, _ := os.Create("/Users/mark/tmp.html")
+	// 		defer localFile.Close()
+	// 		writer := bufio.NewWriter(localFile)
 
-	err = t.Execute(w, dataMap)
+	// 		newbytes := bytes.NewBufferString("")
+	// 		if err = t.Execute(newbytes, dataMap); err != nil {
+	// 			return this.handleError(w, err)
+	// 		}
 
-	return this.handleError(w, err)
+	// 		if tplcontent, errbyte := ioutil.ReadAll(newbytes); errbyte != nil {
+	// 			return errbyte
+	// 		} else {
+	// 			tplcontent = []byte(strings.Replace(string(tplcontent), "%2f", "/", -1))
+	// 			writer.Write([]byte(template.HTML(tplcontent)))
+	// 			writer.Flush()
+	//
+	// 		}
+	// 	}
+	// }
+
+	newbytes := bytes.NewBufferString("")
+	if err = t.Execute(newbytes, dataMap); err != nil {
+		return this.handleError(w, err)
+	}
+	if tplcontent, errbyte := ioutil.ReadAll(newbytes); errbyte != nil {
+		return err
+	} else {
+		if rsp, ok := w.(http.ResponseWriter); ok {
+			rsp.Header().Add("Content-Type", "text/html; charset=utf-8")
+			tplcontent = []byte(strings.Replace(string(tplcontent), "%2f", "/", -1))
+			rsp.Write([]byte(template.HTML(tplcontent)))
+		}
+	}
+	//t.Execute(writer, dataMap)
+	return nil
+	//替代原始写法
 }
 
 func (this *Template) handleError(w io.Writer, err error) error {

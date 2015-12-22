@@ -9,8 +9,8 @@
 package gof
 
 import (
-	"github.com/jrsix/gof/db"
-	"github.com/jrsix/gof/log"
+	"github.com/mark/gof/db"
+	"github.com/mark/gof/log"
 )
 
 // 应用当前的上下文

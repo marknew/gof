@@ -94,12 +94,16 @@ func GetFields(t reflect.Type) (ixs []int, mapNames []string) {
 }
 
 func SetField(field reflect.Value, d []byte) {
+	//fmt.Println(field.Kind().String())
+	//fmt.Println(string(d))
 	if field.IsValid() {
-		//fmt.Println(field.String(), "==>", field.Type().Kind())
+
+		//fmt.Println(reflect.ValueOf(string(d)))
 		switch field.Type().Kind() {
+		// case template.HTML:
+		// 	field.Set(reflect.ValueOf(template.HTML(d)))
 		case reflect.String:
 			field.Set(reflect.ValueOf(string(d)))
-			return
 
 		case reflect.Int:
 			val, err := strconv.ParseInt(string(d), 10, 0)
