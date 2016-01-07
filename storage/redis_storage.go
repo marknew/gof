@@ -146,6 +146,7 @@ func (this *redisStorage) Set(key string, v interface{}) error {
 
 	conn := this._pool.Get()
 	_, err = conn.Do("SET", key, redisValue)
+	//fmt.Println(key, redisValue)
 	conn.Close()
 	return err
 }

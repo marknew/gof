@@ -10,11 +10,14 @@
 package gof
 
 import (
+	"bufio"
 	"bytes"
+	"fmt"
 	"html/template"
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -105,27 +108,28 @@ func (this *Template) Execute(w io.Writer, dataMap TemplateDataMap, tplPath ...s
 		this.Init(&dataMap)
 	}
 	//follow is write to file for testing
-	// for _, path := range tplPath {
-	// 	if strings.HasSuffix(path, "index.html") {
-	// 		localFile, _ := os.Create("/Users/mark/tmp.html")
-	// 		defer localFile.Close()
-	// 		writer := bufio.NewWriter(localFile)
+	for _, path := range tplPath {
+		if strings.HasSuffix(path, "sysuserprofile.html") {
+			localFile, _ := os.Create("/Users/mark/tmp.html")
+			defer localFile.Close()
+			writer := bufio.NewWriter(localFile)
 
-	// 		newbytes := bytes.NewBufferString("")
-	// 		if err = t.Execute(newbytes, dataMap); err != nil {
-	// 			return this.handleError(w, err)
-	// 		}
+			newbytes := bytes.NewBufferString("")
+			if err = t.Execute(newbytes, dataMap); err != nil {
+				fmt.Println(err.Error())
+				return this.handleError(w, err)
+			}
 
-	// 		if tplcontent, errbyte := ioutil.ReadAll(newbytes); errbyte != nil {
-	// 			return errbyte
-	// 		} else {
-	// 			tplcontent = []byte(strings.Replace(string(tplcontent), "%2f", "/", -1))
-	// 			writer.Write([]byte(template.HTML(tplcontent)))
-	// 			writer.Flush()
-	//
-	// 		}
-	// 	}
-	// }
+			if tplcontent, errbyte := ioutil.ReadAll(newbytes); errbyte != nil {
+				return errbyte
+			} else {
+				tplcontent = []byte(strings.Replace(string(tplcontent), "%2f", "/", -1))
+				writer.Write([]byte(template.HTML(tplcontent)))
+				writer.Flush()
+
+			}
+		}
+	}
 
 	newbytes := bytes.NewBufferString("")
 	if err = t.Execute(newbytes, dataMap); err != nil {
@@ -136,6 +140,7 @@ func (this *Template) Execute(w io.Writer, dataMap TemplateDataMap, tplPath ...s
 	} else {
 		if rsp, ok := w.(http.ResponseWriter); ok {
 			rsp.Header().Add("Content-Type", "text/html; charset=utf-8")
+			//url /会变成%2f
 			tplcontent = []byte(strings.Replace(string(tplcontent), "%2f", "/", -1))
 			rsp.Write([]byte(template.HTML(tplcontent)))
 		}

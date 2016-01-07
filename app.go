@@ -19,6 +19,7 @@ var CurrentApp App
 type App interface {
 	// Provided db access
 	Db() db.Connector
+
 	// Return a Wrapper for GoLang template.
 	Template() *Template
 	// Return application configs.

@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	defaultSessionMaxAge int64  = 3600 * 12
+	defaultSessionMaxAge int64  = 3600 * 12 //12个小时
 	sessionCookieName    string = "gof_SessionId"
 )
 
@@ -128,7 +128,7 @@ func (this *Session) SetMaxAge(seconds int64) {
 
 //存储到客户端
 func (this *Session) flushToClient() {
-	d := time.Duration(this._maxAge * 1e9)
+	d := time.Duration(this._maxAge * 1e9) //time.Duration 代表 nanosecond
 	expires := time.Now().Local().Add(d)
 	ck := &http.Cookie{
 		Name:     sessionCookieName,
