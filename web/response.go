@@ -1,11 +1,24 @@
-/**
+ /**
  * Copyright 2015 @ presssfot.com
  * name : response
  * author : mark zhang
  * date : -- :
  * description :
  * history :
+ *  .--,       .--,
+ * ( (  \.---./  ) )
+ *  '.__/o   o\__.'
+ *     {=  ^  =}
+ *      >  -  <
+ *     /       \
+ *    //       \\
+ *   //|   .   |\\
+ *   "'\       /'"_.-~^`'-.
+ *      \  _  /--'         `
+ *    ___)( )(___
+ *   (((__) (__)))    高山仰止,景行行止.虽不能至,心向往之。
  */
+
 package web
 
 import (
